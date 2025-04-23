@@ -1,0 +1,214 @@
+{
+  "logging": {
+    "logs": {
+      "default": {
+        "level": "INFO"
+      }
+    }
+  },
+  "admin": {
+    "disabled": true
+  },
+  "apps": {
+    "tls": {},
+    "http": {
+      "servers": {
+        "video-api": {
+          "listen": [":8080"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "path": ["/*"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "oioidwsrestwsc",
+                  "mongo_host": "mongodb",
+                  "mongo_db": "video-api",
+                  "sts_url": "https://sts.vconf-stage.dk/sts/service/sts",
+                  "client_cert_file": "/config/client.crt",
+                  "client_key_file": "/config/client.key",
+                  "trust_cert_files": ["/trust/sts.cer"],
+                  "service_endpoint": "https://videoapi.vconf-stage.dk/videoapi",
+                  "service_audience": "urn:medcom:videoapi"
+                },
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http",
+                    "tls": {
+                      "client_certificate_file": "/config/client.crt",
+                      "client_certificate_key_file": "/config/client.key"
+                    },
+                    "read_buffer_size": 4096
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "videoapi.vconf-stage.dk:443"
+                    }
+                  ],
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Host": ["videoapi.vconf-stage.dk:443"]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "sms-api": {
+          "listen": [":8081"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "path": ["/*"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "oioidwsrestwsc",
+                  "mongo_host": "mongodb",
+                  "mongo_db": "sms-api",
+                  "sts_url": "https://sts.vconf-stage.dk/sts/service/sts",
+                  "client_cert_file": "/config/client.crt",
+                  "client_key_file": "/config/client.key",
+                  "trust_cert_files": ["/trust/sts.cer"],
+                  "service_endpoint": "https://videoapi.vconf-stage.dk/sms",
+                  "service_audience": "urn:medcom:videoapi"
+                },
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http",
+                    "tls": {
+                      "insecure_skip_verify": true,
+                      "client_certificate_file": "/config/client.crt",
+                      "client_certificate_key_file": "/config/client.key"
+                    },
+                    "read_buffer_size": 4096
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "videoapi.vconf-stage.dk:443"
+                    }
+                  ],
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Host": ["videoapi.vconf-stage.dk:443"]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "device-api": {
+          "listen": [":8082"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "path": ["/*"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "oioidwsrestwsc",
+                  "mongo_host": "mongodb",
+                  "mongo_db": "device-api",
+                  "sts_url": "https://sts.vconf-stage.dk/sts/service/sts",
+                  "client_cert_file": "/config/client.crt",
+                  "client_key_file": "/config/client.key",
+                  "trust_cert_files": ["/trust/sts.cer"],
+                  "service_endpoint": "https://videoapi.vconf-stage.dk/devicereg",
+                  "service_audience": "urn:medcom:videoapi"
+                },
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http",
+                    "tls": {
+                      "insecure_skip_verify": true,
+                      "client_certificate_file": "/config/client.crt",
+                      "client_certificate_key_file": "/config/client.key"
+                    },
+                    "read_buffer_size": 4096
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "videoapi.vconf-stage.dk:443"
+                    }
+                  ],
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Host": ["videoapi.vconf-stage.dk:443"]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "history-api": {
+          "listen": [":8083"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "path": ["/*"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "oioidwsrestwsc",
+                  "mongo_host": "mongodb",
+                  "mongo_db": "history-api",
+                  "sts_url": "https://sts.vconf-stage.dk/sts/service/sts",
+                  "client_cert_file": "/config/client.crt",
+                  "client_key_file": "/config/client.key",
+                  "trust_cert_files": ["/trust/sts.cer"],
+                  "service_endpoint": "https://historyapi.vconf-stage.dk/",
+                  "service_audience": "urn:medcom:videoapi"
+                },
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http",
+                    "tls": {
+                      "insecure_skip_verify": true,
+                      "client_certificate_file": "/config/client.crt",
+                      "client_certificate_key_file": "/config/client.key"
+                    },
+                    "read_buffer_size": 4096
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "historyapi.vconf-stage.dk:443"
+                    }
+                  ],
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Host": ["historyapi.vconf-stage.dk:443"]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

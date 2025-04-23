@@ -1,0 +1,17 @@
+services:
+  wsc:
+    image: kvalitetsit/kitcaddy:1.5.5       # Kitcaddy image
+    command: --config /config/config.json   # Konfigurationsfil for WSC-proxy
+    volumes:
+      - ./config/client.crt:/config/client.crt         # Klientcertifikat for autentifikation mod VDX STS
+      - ./config/client.key:/config/client.key         # Klientnøgle for autentifikation mod VDX STS
+      - ./config/config.json:/config/config.json       # Hovedkonfigurationsfil for WSC-proxy
+      - ./trust/sts.cer:/trust/sts.cer                 # Tillids-certifikat for STS-tjenesten
+    ports:
+      - "8095:8080"  # VideoAPI: Lokal port 8095 -> container port 8080 (internt kaldet "video-api" i config.json)
+      - "8096:8081"  # SmsAPI: Lokal port 8096 -> container port 8081 (internt kaldet "sms-api" i config.json)
+      - "8082:8082"  # DeviceReg API: Lokal port 8082 -> container port 8082 (internt kaldet "device-api" i config.json)
+      - "8083:8083"  # History API: Lokal port 8083 -> container port 8083 (internt kaldet "history-api" i config.json)
+
+  mongo:
+    image: mongo:7.0.4  # MongoDB database til at gemme caches og tokens fra STS

@@ -1,0 +1,4 @@
+{
+  "message": "Mødelink %meeting_url%",
+  "to": "{phone_number}"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Test Device",
+  "description": "Dette er en test enhed",
+  "organisation_code": "device_org",
+  "enabled": true
+}

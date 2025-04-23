@@ -1,0 +1,20 @@
+{
+  "subject": "This is a subject",
+  "startTime": "2024-12-10T07:40:00 +0000",
+  "endTime": "2024-12-10T13:30:00 +0000",
+  "description": "This is a description.",
+  "projectCode": "PROJECT001.",
+  "organizedByEmail": "{email_address}",
+  "meetingType": "NORMAL",
+  "additionalInformation" :
+  [
+    {
+        "key": "test1",
+        "value": "value-et"
+    },
+    {
+        "key": "test2",
+        "value": "value-to"
+    }
+]
+}
